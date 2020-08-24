@@ -3,6 +3,7 @@ import getItemValue from "./getItemValue";
 import getLootLists from "./getLootLists";
 import getAttendance from "./getAttendance";
 import getLootDrops from "./getLootDrops";
+import { log } from "./util";
 
 /**
  * The point value modifier for the various bonuses.
@@ -13,6 +14,7 @@ const bonuses = {
 };
 
 const totalRaidItems = 517;
+
 /**
  * Uses the provided item name to generate the list of prios for this item and displays them.
  * @param {string} itemName The item to display prios for.
@@ -37,9 +39,9 @@ export default function displayItemPrios(itemName: string, _: number = 0) {
                 for (const main in altList) {
                     if (altList[main].indexOf(playerName) >= 0) {
                         isAlt = true;
-                        Logger.log(playerName + " is an alt of " + main);
+                        log(playerName + " is an alt of " + main);
                         playerAttendance = attendance.find((att) => att.name === main);
-                        Logger.log("Found new attendance of " + playerAttendance.raidPct);
+                        log("Found new attendance of " + playerAttendance.raidPct);
                         break;
                     }
                 }
@@ -60,7 +62,7 @@ export default function displayItemPrios(itemName: string, _: number = 0) {
                 }
                 let totalValue = getItemValue(item.value, 0, playerAttendance.raidPct, bonuses[item.special] || 0, previousDrops, item.special === "OS");
                 if (isAlt) {
-                    totalValue /= 2;
+                    totalValue = Math.round((totalValue / 2) * 10) / 10;
                 }
                 prios.push({
                     name: playerName,

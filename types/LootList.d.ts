@@ -36,3 +36,17 @@ declare interface Item {
 declare type AltMap = {
     [name: string]: string[]
 };
+
+/**
+ * An object that maps loot drops the date they dropped.
+ */
+declare type LootDrops = {
+    [date: string]: string[];
+};
+
+declare interface PlayerAttendance {
+    name: string;
+    totalRaids: number;
+    raidPct: number;
+    dates: string[];
+}

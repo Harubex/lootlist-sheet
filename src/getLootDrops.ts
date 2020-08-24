@@ -1,23 +1,27 @@
-export default function getLootDrops() {
-    const activeSpread = SpreadsheetApp.getActiveSpreadsheet();
-    const dropSheet = activeSpread.getSheetByName("Loot Drops");
-    const allValues = dropSheet.getDataRange().getValues();
-    const drops: { [date: string]: string[] } = {};
+import { findSheet, cacheKeys, cached } from "./util";
 
-    for (let i = 0; i < allValues[0].length; i++) {
-        const header = allValues[0][i];
-        if (!header) {
-            break;
-        }
-        const raidDrops = [];
-        for (let j = 0; j < allValues.length; j++) {
-            const item = allValues[j][i];
-            if (!item) {
+export default function getLootDrops(): LootDrops {
+    return cached(cacheKeys.lootDrops, () => {
+        // Get the sheet that records all the past raids' drops.
+        const dropSheet = findSheet("Loot Drops");
+        const allValues = dropSheet.getDataRange().getValues();
+        const drops: LootDrops = {};
+
+        for (let i = 0; i < allValues[0].length; i++) {
+            const header = allValues[0][i];
+            if (!header) {
                 break;
             }
-            raidDrops.push(item);
+            const raidDrops = [];
+            for (let j = 0; j < allValues.length; j++) {
+                const item = allValues[j][i];
+                if (!item) {
+                    break;
+                }
+                raidDrops.push(item);
+            }
+            drops[header] = raidDrops;
         }
-        drops[header] = raidDrops;
-    }
-    return drops;
+        return drops;
+    });
 }

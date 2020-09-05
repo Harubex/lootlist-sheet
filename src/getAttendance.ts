@@ -1,7 +1,7 @@
 import { findSheet, cached, cacheKeys } from "./util";
 
 // Max size of raid, accounting for swaps.
-const raidSize = 50;
+const raidSize = 75;
 // Size of bench, awkward hard-coded value because I'm lazy.
 const benchSize = 10;
 // The n-th most recent raids to consider for attendance.
@@ -23,7 +23,7 @@ export default function getAttendance(): PlayerAttendance[] {
         // Get the names of everyone who actively attended those raids.
         const allAttendance = attendanceSheet.getRange(1, 1, raidSize, totalRaids);
         // Get the names of everyone who actively attended those raids via the bench.
-        const allBenched = attendanceSheet.getRange(53, 1, benchSize, totalRaids);
+        const allBenched = attendanceSheet.getRange(80, 1, benchSize, totalRaids);
 
         // Merge raid/bench members together.
         const attendeeData = allAttendance.getValues().concat(allBenched.getValues());

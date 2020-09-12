@@ -38,7 +38,7 @@ declare type AltMap = {
 };
 
 /**
- * An object that maps loot drops the date they dropped.
+ * An object that maps loot drops to the date they dropped.
  */
 declare type LootDrops = {
     [date: string]: string[];

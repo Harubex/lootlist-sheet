@@ -1,4 +1,4 @@
-import { findSheet, cacheKeys, cached } from "./util";
+import { findSheet, cacheKeys, cached, log } from "./util";
 
 export default function getLootDrops(): LootDrops {
     return cached(cacheKeys.lootDrops, () => {
@@ -13,14 +13,14 @@ export default function getLootDrops(): LootDrops {
                 break;
             }
             const raidDrops = [];
-            for (let j = 0; j < allValues.length; j++) {
+            for (let j = 1; j < allValues.length; j++) {
                 const item = allValues[j][i];
                 if (!item) {
                     break;
                 }
                 raidDrops.push(item);
             }
-            drops[header] = raidDrops;
+            drops[new Date(header).getTime()] = raidDrops;
         }
         return drops;
     });

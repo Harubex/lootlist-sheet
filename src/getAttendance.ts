@@ -65,7 +65,7 @@ export default function getAttendance(): PlayerAttendance[] {
         }));
         ret.sort((a, b) => b.totalRaids - a.totalRaids);
         for (let i = 0; i < ret.length; i++) {
-            ret[i].dates = attendanceDateMap[ret[i].name];
+            ret[i].dates = attendanceDateMap[ret[i].name]
         }
         return ret;
     });

@@ -26,7 +26,6 @@ export default function displayItemPrios(itemName: string, _: number = 0) {
     const lootLists = getLootLists();
     const altList = getAlts();
     const lootDrops = getLootDrops();
-
     const prios = [];
     for (let i = 0; i < lootLists.length; i++) {
         const item = lootLists[i].items.find((item) => item.name === itemName);
@@ -50,8 +49,14 @@ export default function displayItemPrios(itemName: string, _: number = 0) {
             // No sense adding a player that doesnt show up.
             if (playerAttendance) {
                 let previousDrops = 0;
+                let previousDateTimes = [];
                 for (let i = 0; i < playerAttendance.dates.length; i++) {
-                    const raidLoot = lootDrops[playerAttendance.dates[i]];
+                    const dateTime = new Date(playerAttendance.dates[i]).getTime();
+                    if (previousDateTimes.indexOf(dateTime) >= 0) {
+                        continue;
+                    }
+                    const raidLoot = lootDrops[dateTime];
+                    previousDateTimes.push(dateTime);
                     if (raidLoot) {
                         raidLoot.forEach((item) => {
                             if (itemName === item) {

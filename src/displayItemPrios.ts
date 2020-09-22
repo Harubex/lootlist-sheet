@@ -40,7 +40,11 @@ export default function displayItemPrios(itemName: string, _: number = 0) {
                         isAlt = true;
                         log(playerName + " is an alt of " + main);
                         playerAttendance = attendance.find((att) => att.name === main);
-                        log("Found new attendance of " + playerAttendance.raidPct);
+                        if (!playerAttendance) {
+                            log("Unable to find attendance for main " + main + " (Alt: " + playerName + ")");
+                        } else {
+                            log("Found new attendance of " + playerAttendance.raidPct);
+                        }
                         break;
                     }
                 }

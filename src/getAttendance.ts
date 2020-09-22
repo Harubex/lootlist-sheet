@@ -6,6 +6,8 @@ const raidSize = 75;
 const benchSize = 10;
 // The n-th most recent raids to consider for attendance.
 const attendanceHistory = 16;
+// The max number of excused absences allowed.
+const excusedAbsences = 1;
 
 /**
  * Compiles attendance for each raid participant.
@@ -56,11 +58,15 @@ export default function getAttendance(): PlayerAttendance[] {
             }
         }
 
+        function excused(total: number) {
+            return Math.min(attendanceHistory, total + excusedAbsences);
+        }
+
         // Convert object into array of objects, sort by attendance, and return (holy shit we're done).
         const ret: PlayerAttendance[] = Object.entries(attendanceCount).map(([name, totalRaids]) => ({
             name,
-            totalRaids,
-            raidPct: totalRaids / attendanceHistory,
+            totalRaids: excused(totalRaids),
+            raidPct: excused(totalRaids) / attendanceHistory,
             dates: [] as string[]
         }));
         ret.sort((a, b) => b.totalRaids - a.totalRaids);
